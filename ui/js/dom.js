@@ -23,9 +23,18 @@ export class Dom {
     }, "");
   }
 
-  /** Marks already-safe HTML so `Dom.html` doesn't escape it. */
+  /** Marks already-safe HTML so `Dom.html` doesn't escape it. Nothing (undefined or null) is empty. */
   static raw(html) {
-    return new Raw(html);
+    return new Raw(html ?? "");
+  }
+
+  /** A selector that finds the same control again after a redraw, from its data attributes. */
+  static selectorOf(element) {
+    const keys = ["do", "action", "id", "list", "index", "key", "choice", "field", "value", "tab", "trigger"];
+    const parts = keys
+      .filter(key => element.dataset?.[key] !== undefined)
+      .map(key => `[data-${key}="${CSS.escape(element.dataset[key])}"]`);
+    return parts.length ? element.localName + parts.join("") : null;
   }
 
   static $(selector, root = document) {

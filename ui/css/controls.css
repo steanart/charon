@@ -48,6 +48,22 @@
 .btn.danger { color: var(--error); border-color: rgb(var(--error-rgb) / 0.35); }
 .btn.danger:hover { background: rgb(var(--error-rgb) / 0.1); }
 
+/* A red button for things that remove, replace or risk files. Never the default, never on Enter. */
+.btn.danger-solid { background: var(--error); color: var(--on-error); border-color: transparent; font-weight: 600; }
+.btn.danger-solid:hover { background: color-mix(in srgb, var(--error) 88%, var(--text-strong)); box-shadow: 0 0 24px rgb(var(--error-rgb) / 0.35); }
+
+/* Amber: go on, with care */
+.btn.caution { color: var(--pending); border-color: rgb(var(--pending-rgb) / 0.45); background: rgb(var(--pending-rgb) / 0.06); }
+.btn.caution:hover { background: rgb(var(--pending-rgb) / 0.14); border-color: var(--pending); }
+
+.btn.small { height: 28px; padding: 0 11px; font-size: 12px; }
+
+/* The keyboard focus, shown only when the keyboard moves it */
+.btn:focus-visible, .icon-btn:focus-visible, .segmented button:focus-visible, .card-choice:focus-visible {
+  outline: 2px solid rgb(var(--river-rgb) / 0.7);
+  outline-offset: 2px;
+}
+
 .icon-btn {
   display: grid;
   place-items: center;
@@ -114,7 +130,10 @@
 .toggle { display: flex; align-items: center; justify-content: space-between; gap: 16px; cursor: pointer; }
 .toggle .copy strong { display: block; font-weight: 500; }
 .toggle .copy small { color: var(--text-dim); font-size: 12px; }
-.toggle input { display: none; }
+/* The checkbox stays reachable with the keyboard; the switch draws it. */
+.toggle { position: relative; }
+.toggle input { position: absolute; opacity: 0; width: 1px; height: 1px; pointer-events: none; }
+.toggle input:focus-visible + .switch { box-shadow: 0 0 0 3px rgb(var(--river-rgb) / 0.35); }
 .toggle .switch {
   position: relative;
   width: 38px;
@@ -137,6 +156,18 @@
 }
 .toggle input:checked + .switch { background: rgb(var(--in-sync-rgb) / 0.28); }
 .toggle input:checked + .switch::after { transform: translateX(16px); background: var(--in-sync); box-shadow: 0 0 10px var(--in-sync); }
+
+/* A switch that risks data (full automation) turns red when on */
+.toggle.danger input:checked + .switch { background: rgb(var(--error-rgb) / 0.3); }
+.toggle.danger input:checked + .switch::after { background: var(--error); box-shadow: 0 0 10px var(--error); }
+.toggle.danger strong { display: flex; align-items: center; gap: 8px; }
+
+/* Draws the eye to a switch the window opened the editor for */
+.toggle.flash { border-radius: var(--radius-sm); animation: flash 1.6s var(--ease) 2; }
+@keyframes flash { 50% { box-shadow: 0 0 0 6px rgb(var(--error-rgb) / 0.16); background: rgb(var(--error-rgb) / 0.06); } }
+
+/* A checkbox drawn in the window's style */
+input[type="checkbox"].check, .tick input, .r-tick input { width: 16px; height: 16px; margin: 1px 0 0; flex: none; accent-color: var(--river); cursor: pointer; }
 
 /* ---------------------------------------------------------------- segmented choice */
 
@@ -167,6 +198,7 @@
 .card-choice {
   position: relative;
   display: grid;
+  align-content: start;
   gap: 8px;
   padding: 14px;
   border-radius: var(--radius-sm);
@@ -208,3 +240,32 @@
 .chip button { border: 0; background: transparent; color: var(--text-faint); width: 18px; height: 18px; border-radius: 5px; padding: 0; line-height: 1; }
 .chip button:hover { color: var(--error); background: rgb(var(--error-rgb) / 0.12); }
 .chips input { flex: 1; min-width: 120px; border: 0; background: transparent; outline: none; font: 12px var(--mono); height: 26px; user-select: text; -webkit-user-select: text; }
+
+/* ---------------------------------------------------------------- notices */
+
+/* A coloured block with an icon: danger (red), caution (amber) or info (neutral). */
+.notice {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--line-strong);
+  background: rgb(var(--ink-rgb) / 0.03);
+  color: var(--text);
+  font-size: 12.5px;
+  line-height: 1.5;
+  user-select: text;
+  -webkit-user-select: text;
+}
+.notice .ico { width: 15px; height: 15px; margin-top: 1px; color: var(--text-dim); }
+.notice strong { font-weight: 600; }
+.notice.danger { color: var(--error-text); background: rgb(var(--error-rgb) / 0.09); border-color: rgb(var(--error-rgb) / 0.4); }
+.notice.danger .ico, .notice.danger strong { color: var(--error); }
+.notice.caution { background: rgb(var(--pending-rgb) / 0.08); border-color: rgb(var(--pending-rgb) / 0.38); }
+.notice.caution .ico { color: var(--pending); }
+:root[data-theme="light"] .notice.danger strong { color: var(--error-text); }
+
+/* The sentence under a choice that says what it does */
+.choice-says { margin: 0; color: var(--text-dim); font-size: 12px; }
+.choice-says.bad { color: var(--error); }

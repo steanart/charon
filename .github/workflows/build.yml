@@ -67,8 +67,8 @@ jobs:
         shell: bash
         run: |
           set -o pipefail
-          if ! cargo test -p charon-core 2>&1 | tee test-output.txt; then
-            grep -E "panicked|^error|^---- |left:|right:" test-output.txt | head -30 |
+          if ! cargo test -p charon-core --no-fail-fast 2>&1 | tee test-output.txt; then
+            grep -E "panicked|^error|^---- |left:|right:" test-output.txt | head -80 |
               while IFS= read -r line; do echo "::error title=Test failure::$line"; done
             exit 1
           fi

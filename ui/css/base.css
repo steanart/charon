@@ -31,11 +31,13 @@
   /* Statuses: colour and icon always go together */
   --in-sync: #3ddc97;  --in-sync-rgb: 61 220 151;
   --syncing: #4da3ff;
-  --pending: #ffb547;
+  --pending: #ffb547;  --pending-rgb: 255 181 71;
+  --review: #ff7ad9;   --review-rgb: 255 122 217;   /* waits for your OK: neither amber nor red */
   --paused: #8a8f98;
   --conflict: #b388ff; --conflict-rgb: 179 136 255;
   --error: #ff5d6c;    --error-rgb: 255 93 108;
   --error-text: #ffd4d8;
+  --on-error: #1d0b0e;         /* text on a red button */
   --offline: #50535d;
   --new: #5ee6ff;
 
@@ -77,11 +79,13 @@
 
   --in-sync: #13a067;  --in-sync-rgb: 19 160 103;
   --syncing: #2673d9;
-  --pending: #c97a06;
+  --pending: #9a5c00;  --pending-rgb: 154 92 0;   /* deep enough for small text on white */
+  --review: #b8338f;   --review-rgb: 184 51 143;
   --paused: #7b808a;
   --conflict: #8456e8; --conflict-rgb: 132 86 232;
   --error: #dc3346;    --error-rgb: 220 51 70;
   --error-text: #a3192a;
+  --on-error: #ffffff;
   --offline: #a6a9b1;
   --new: #0590b3;
 
@@ -107,7 +111,8 @@ html, body {
 
 body {
   display: grid;
-  grid-template-rows: auto auto auto 1fr;
+  grid-template-rows: auto auto auto auto 1fr;
+  grid-template-columns: minmax(0, 1fr); /* never wider than the window, whatever the title bar holds */
 }
 
 button, input, select, textarea { font: inherit; color: inherit; }
@@ -116,6 +121,8 @@ img { display: block; }
 ::selection { background: rgb(var(--river-rgb) / 0.28); }
 
 .mono, kbd, code { font-family: var(--mono); }
+.faint { color: var(--text-faint); }
+.bad { color: var(--error); }
 
 kbd {
   font-size: 10.5px;

@@ -26,6 +26,16 @@ impl Desktop {
             .map_err(|e| format!("Couldn't open the browser: {e}"))
     }
 
+    /// macOS: opens System Settings › Privacy & Security › Full Disk Access. Other systems
+    /// have no such switch, so it does nothing there.
+    pub fn open_privacy_settings() -> Result<(), String> {
+        if cfg!(target_os = "macos") {
+            Self::open_url("x-apple.systempreferences:com.apple.preference.security?Privacy_AllFiles")
+        } else {
+            Ok(())
+        }
+    }
+
     /// `path`, or the nearest parent folder that exists.
     fn closest_existing(path: &Path) -> Option<PathBuf> {
         let mut current = path.to_path_buf();

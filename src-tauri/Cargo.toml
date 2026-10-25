@@ -1,7 +1,8 @@
 [package]
 name = "charon"
-version = "0.2.0"
+version = "0.3.0"
 edition = "2021"
+rust-version = "1.90"
 description = "Charon ferries your files between folders: mirror, backup or two-way sync"
 license = "MIT"
 authors = ["stean.ART"]
@@ -20,5 +21,10 @@ serde_json = "1"
 tauri = { version = "2", features = ["tray-icon", "image-png"] }
 tauri-plugin-autostart = "2"
 tauri-plugin-dialog = "2"
+tauri-plugin-log = "2"
 tauri-plugin-notification = "2"
+tauri-plugin-single-instance = "2"
 ureq = { version = "3", features = ["json"] }
+
+[dev-dependencies]
+tempfile = "3"

@@ -1,6 +1,7 @@
 //! App-wide settings.
 
 use serde::{Deserialize, Serialize};
+use std::time::Duration;
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase", default)]
@@ -35,6 +36,14 @@ impl Default for Settings {
             check_minutes: 15,
             check_updates: true,
         }
+    }
+}
+
+impl Settings {
+    /// How long the regular look waits between looks at a job: `check_minutes`, and at
+    /// least a minute.
+    pub fn check_interval(&self) -> Duration {
+        Duration::from_secs(self.check_minutes.max(1) as u64 * 60)
     }
 }
 

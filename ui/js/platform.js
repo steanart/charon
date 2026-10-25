@@ -16,6 +16,11 @@ export class Platform {
     return Platform.isMac ? "Finder" : Platform.isWindows ? "Explorer" : "file manager";
   }
 
+  /** "menu bar" on a Mac, "system tray" elsewhere. */
+  static tray() {
+    return Platform.isMac ? "menu bar" : "system tray";
+  }
+
   /** The modifier key symbol for shortcuts. */
   static modKey() {
     return Platform.isMac ? "⌘" : "Ctrl+";

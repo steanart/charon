@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="css/layout.css">
   <link rel="stylesheet" href="css/rows.css">
   <link rel="stylesheet" href="css/overlays.css">
+  <link rel="stylesheet" href="css/review.css">
 </head>
 <body>
   <!-- The river: an animated backdrop; its boat crosses as the jobs sync. -->
@@ -25,7 +26,7 @@
       <span class="pulse"></span><span class="text"></span>
     </div>
     <div class="actions">
-      <button id="btn-sync-all" class="btn ghost" title="Sync every job now (⌘⇧S)">
+      <button id="btn-sync-all" class="btn ghost" title="Start the jobs that run by themselves, and review the others (⌘⇧S)">
         <span class="ico" data-icon="sync"></span><span>Sync all</span>
       </button>
       <button id="btn-pause-all" class="btn ghost" title="Pause or resume every job">
@@ -41,6 +42,10 @@
       <button id="btn-about" class="icon-btn" title="About Charon"><span class="ico" data-icon="info"></span></button>
     </div>
   </header>
+
+  <!-- What keeps Charon itself from syncing (an older Charon running, a state that can't be
+       saved). Empty, it takes no room. -->
+  <section class="app-problem" id="app-problem" role="alert"></section>
 
   <!-- Numbers at a glance; each tile filters the list. -->
   <section class="stats" id="stats" aria-label="Overview"></section>
@@ -61,7 +66,9 @@
   <aside id="editor" class="sheet" aria-hidden="true"></aside>
   <aside id="settings" class="sheet" aria-hidden="true"></aside>
   <aside id="about" class="sheet" aria-hidden="true"></aside>
-  <div id="preview" class="dialog" role="dialog" aria-modal="true" aria-hidden="true"></div>
+  <aside id="waiting" class="sheet" aria-hidden="true" aria-label="Waiting for your OK"></aside>
+  <aside id="upgrade" class="sheet" aria-hidden="true" aria-label="What changed"></aside>
+  <div id="review" class="dialog review" role="dialog" aria-modal="true" aria-hidden="true" aria-label="Review the changes"></div>
   <div id="menu" class="popmenu" role="menu" aria-hidden="true"></div>
   <div id="toast" class="toast" role="status"></div>
 

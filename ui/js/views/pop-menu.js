@@ -6,10 +6,11 @@ import { Icons } from "../icons.js";
 export class PopMenu {
   constructor(element) {
     this.element = element;
+    this.anchor = null;   // the button it opened under
     this.actions = [];
     element.addEventListener("click", event => {
       const button = event.target.closest("button[data-index]");
-      if (!button) return;
+      if (!button || button.disabled) return;
       const action = this.actions[Number(button.dataset.index)];
       this.close();
       action?.();
@@ -24,14 +25,16 @@ export class PopMenu {
     return this.element.classList.contains("open");
   }
 
-  /** Opens under `anchor`. Items: `{ label, icon, danger, run }` or `"-"` for a line. */
+  /** Opens under `anchor`. Items: `{ label, icon, danger, disabled, title, run }` or `"-"` for a line. */
   show(anchor, items) {
+    this.anchor = anchor;
     this.actions = [];
     this.element.innerHTML = items
       .map(item => {
         if (item === "-") return "<hr>";
         const index = this.actions.push(item.run) - 1;
-        return Dom.html`<button data-index="${index}" class="${item.danger ? "danger" : ""}" role="menuitem">
+        return Dom.html`<button data-index="${index}" class="${item.danger ? "danger" : ""}" role="menuitem"
+          ${item.disabled ? "disabled" : ""} title="${item.title ?? ""}">
           <span class="ico">${Dom.raw(Icons[item.icon] ?? "")}</span><span>${item.label}</span></button>`;
       })
       .join("");
@@ -45,8 +48,11 @@ export class PopMenu {
     if (menu.bottom > window.innerHeight - 8) this.element.style.top = `${box.top - menu.height - 6}px`;
   }
 
+  /** Closes; a focused item gives the focus back to the menu's button, so it isn't left on a hidden item. */
   close() {
+    const focused = this.element.contains(document.activeElement);
     this.element.classList.remove("open");
     this.element.setAttribute("aria-hidden", "true");
+    if (focused) this.anchor?.focus({ preventScroll: true });
   }
 }

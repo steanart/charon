@@ -11,7 +11,7 @@
 //! | `plan`      | comparing snapshots and deciding what has to cross, and which way     |
 //! | `run`       | carrying out a plan: copies, safe deletes, conflict copies, progress  |
 //! | `store`     | the settings file, two-way baselines and per-job logs on disk         |
-//! | `engine`    | the orchestration: jobs, runs, previews, status, events               |
+//! | `engine`    | the orchestration: jobs, reviews, runs, status, events                |
 //! | `autopilot` | automatic triggers: folder watching, schedules, drives coming online  |
 
 pub mod autopilot;
@@ -24,6 +24,6 @@ pub mod scan;
 pub mod store;
 
 pub use autopilot::Autopilot;
-pub use engine::{Emitter, Engine, EngineEvent};
+pub use engine::{Approval, Emitter, Engine, EngineEvent, NotePage, StepPage, SyncStart};
 pub use error::{Error, Result};
 pub use model::*;
