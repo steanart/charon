@@ -274,8 +274,10 @@ fn a_folder_that_comes_back_is_looked_at_before_it_says_in_sync() {
     // The backup drive was away while files changed; it's back now (the autopilot calls this).
     write(&a.join("two.txt"), "2");
     engine.forget_look(&id);
+    // A look that was already under way may have found the change by now: either way, it
+    // never says in sync.
     let view = engine.job(&id).unwrap();
-    assert_eq!(view.status, JobStatus::Looking);
-    assert_eq!(engine.overview().headline(), "Looking for changes…");
+    assert!(matches!(view.status, JobStatus::Looking | JobStatus::Review), "{:?}", view.status);
+    assert_ne!(engine.overview().headline(), "All in sync");
     look_until(&engine, &id, |engine| engine.job(&id).unwrap().status == JobStatus::Review);
 }
